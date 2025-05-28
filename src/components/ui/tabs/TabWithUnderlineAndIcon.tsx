@@ -112,7 +112,7 @@ const tabData: TabData[] = [
   },
 ];
 
-const TabButton: React.FC<TabButtonProps> = ({
+export const TabButton: React.FC<TabButtonProps> = ({
   label,
   icon,
   isActive,

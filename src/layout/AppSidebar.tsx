@@ -20,12 +20,6 @@ import {
   TableIcon,
   TaskIcon,
   UserCircleIcon,
-  InstagramIcon,
-  FacebookIcon,
-  WhatsappIcon,
-  TokopediaIcon,
-  ShopeeIcon,
-  TikTokIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 
@@ -38,72 +32,15 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <InstagramIcon />,
-    name: "Instagram",
-    subItems: [
-      { name: "Dashboard", path: "/instagram/" },
-      { name: "Posts & Comments", path: "/instagram/posts-comments" },
-      { name: "Direct Message", path: "/instagram/direct-message" },
-      { name: "Analytics", path: "/instagram/analytics" },
-      { name: "Connect & Disconnect", path: "/instagram/connect" },
-    ],
-  },
-  // {
-  //   icon: <FacebookIcon />,
-  //   name: "Facebook",
-  //   subItems: [
-  //     { name: "Dashboard", path: "/facebook/" },
-  //     { name: "Posts & Comments", path: "/facebook/posts-comments" },
-  //     { name: "Direct Message", path: "/facebook/direct-message" },
-  //     { name: "Analytics", path: "/facebook/analytics" },
-  //     { name: "Connect & Disconnect", path: "/facebook/connect" },
-  //   ],
-  // },
-  // {
-  //   icon: <WhatsappIcon />,
-  //   name: "Whatsapp",
-  //   subItems: [
-  //     { name: "Dashboard", path: "/whatsapp/" },
-  //     { name: "Posts & Comments", path: "/whatsapp/posts-comments" },
-  //     { name: "Direct Message", path: "/whatsapp/direct-message" },
-  //     { name: "Analytics", path: "/whatsapp/analytics" },
-  //     { name: "Connect & Disconnect", path: "/whatsapp/connect" },
-  //   ],
-  // },
-  {
-    icon: <TokopediaIcon />,
-    name: "Tokopedia",
-    subItems: [
-      { name: "Dashboard", path: "/tokopedia/" },
-      { name: "Posts & Comments", path: "/tokopedia/posts-comments" },
-      { name: "Direct Message", path: "/tokopedia/direct-message" },
-      { name: "Analytics", path: "/tokopedia/analytics" },
-      { name: "Connect & Disconnect", path: "/tokopedia/connect" },
-    ],
+    icon: <ChatIcon />,
+    name: "Chat",
+    path: "/chat",
   },
   {
-    icon: <ShopeeIcon />,
-    name: "Shopee",
-    subItems: [
-      { name: "Dashboard", path: "/shopee/" },
-      { name: "Posts & Comments", path: "/shopee/posts-comments" },
-      { name: "Direct Message", path: "/shopee/direct-message" },
-      { name: "Analytics", path: "/shopee/analytics" },
-      { name: "Connect & Disconnect", path: "/shopee/connect" },
-    ],
+    icon: <CalenderIcon />,
+    name: "Connected Platforms",
+    path: "/connected-platforms",
   },
-  {
-    icon: <TikTokIcon />,
-    name: "Tiktok",
-    subItems: [
-      { name: "Dashboard", path: "/tiktok/" },
-      { name: "Posts & Comments", path: "/tiktok/posts-comments" },
-      { name: "Direct Message", path: "/tiktok/direct-message" },
-      { name: "Analytics", path: "/tiktok/analytics" },
-      { name: "Connect & Disconnect", path: "/tiktok/connect" },
-    ],
-  },
-
   {
     icon: <CalenderIcon />,
     name: "Calendar",
@@ -211,11 +148,6 @@ const othersItems: NavItem[] = [
 ];
 
 const supportItems: NavItem[] = [
-  {
-    icon: <ChatIcon />,
-    name: "Chat",
-    path: "/chat",
-  },
   {
     icon: <MailIcon />,
     name: "Email",

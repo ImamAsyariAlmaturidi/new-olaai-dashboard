@@ -1,5 +1,5 @@
 "use client";
-import { doLogin } from "@/app/actions/auth";
+
 import Checkbox from "@/components/form/input/Checkbox";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
@@ -14,37 +14,7 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
   const router = useRouter();
-  async function handleLogin(
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> {
-    e.preventDefault();
-    try {
-      const res = await doLogin(email);
-      console.log(res);
-      if (!res) {
-        Alert({
-          title: "Error",
-          variant: "error",
-          message: "Failed to login. Please try again.",
-        });
-        return;
-      }
 
-      Alert({
-        title: "Success",
-        variant: "success",
-        message:
-          "Login successful! Please check your email for the verification code.",
-      });
-
-      setTimeout(() => {
-        router.push("/two-step-verification?email=" + email);
-      }, 2000);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
-  }
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">
       <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
@@ -119,7 +89,7 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-            <form onSubmit={handleLogin}>
+            <form>
               <div className="space-y-6">
                 <div>
                   <Label>

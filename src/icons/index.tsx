@@ -56,7 +56,11 @@ import TokopediaIcon from "./tokopedia.svg";
 import ShopeeIcon from "./shopee.svg";
 import TikTokIcon from "./tiktok.svg";
 import WhatsappIcon from "./whatsapp.svg";
+import RobotIcon from "./robot.png";
+import RobotWhiteIcon from "./robot-white.svg";
 export {
+  RobotWhiteIcon,
+  RobotIcon,
   DownloadIcon,
   FileIcon,
   GridIcon,

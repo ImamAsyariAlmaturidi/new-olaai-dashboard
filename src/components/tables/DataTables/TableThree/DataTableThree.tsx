@@ -271,10 +271,7 @@ export default function DataTableThree() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <div className="flex items-center justify-between cursor-pointer">
                     <div className="flex gap-3">
                       <Checkbox checked={isChecked} onChange={setIsChecked} />
@@ -288,10 +285,7 @@ export default function DataTableThree() {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <div className="flex items-center justify-between cursor-pointer">
                     <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                       Position
@@ -302,10 +296,7 @@ export default function DataTableThree() {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <div className="flex items-center justify-between cursor-pointer">
                     <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                       Salary
@@ -316,10 +307,7 @@ export default function DataTableThree() {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <div className="flex items-center justify-between cursor-pointer">
                     <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                       Office
@@ -330,10 +318,7 @@ export default function DataTableThree() {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <div className="flex items-center justify-between cursor-pointer">
                     <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                       Status
@@ -344,10 +329,7 @@ export default function DataTableThree() {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <div className="flex items-center justify-between cursor-pointer">
                     <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                       Action

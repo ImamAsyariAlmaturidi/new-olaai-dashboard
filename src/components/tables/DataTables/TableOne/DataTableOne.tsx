@@ -278,7 +278,6 @@ export default function DataTableOne() {
                 ].map(({ key, label }) => (
                   <TableCell
                     key={key}
-                    isHeader
                     className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                   >
                     <div

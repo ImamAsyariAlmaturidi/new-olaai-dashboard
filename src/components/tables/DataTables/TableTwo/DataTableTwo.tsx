@@ -245,7 +245,6 @@ export default function DataTableTwo() {
                 ].map(({ key, label }) => (
                   <TableCell
                     key={key}
-                    isHeader
                     className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
                   >
                     <div
@@ -274,10 +273,7 @@ export default function DataTableTwo() {
                     </div>
                   </TableCell>
                 ))}
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]"
-                >
+                <TableCell className="px-4 py-3 border border-gray-100 dark:border-white/[0.05]">
                   <p className="font-medium text-gray-700 text-theme-xs dark:text-gray-400">
                     Action
                   </p>

@@ -5,7 +5,8 @@ import { registerSchema } from "@/schemas/registerSchema";
 import { cookies } from "next/headers";
 
 export type RegisterData = z.infer<typeof registerSchema>;
-
+const NEXT_PUBLIC_BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 export async function doRegister(data: RegisterData) {
   const parsed = registerSchema.safeParse(data);
 
@@ -16,7 +17,7 @@ export async function doRegister(data: RegisterData) {
     };
   }
 
-  const response = await fetch("http://localhost:3001/api/auth/register", {
+  const response = await fetch(`${NEXT_PUBLIC_BASE_URL}/api/auth/register`, {
     method: "POST",
     cache: "no-store",
     headers: {
@@ -62,7 +63,7 @@ export async function doRegister(data: RegisterData) {
 }
 
 export async function doLogin(email: string, password: string) {
-  const response = await fetch("http://localhost:3001/api/auth/login", {
+  const response = await fetch(`${NEXT_PUBLIC_BASE_URL}/api/auth/login`, {
     method: "POST",
     cache: "no-store",
     headers: {

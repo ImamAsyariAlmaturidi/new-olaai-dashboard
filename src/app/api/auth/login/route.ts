@@ -2,7 +2,8 @@
 
 import { NextResponse, NextRequest } from "next/server";
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
   try {

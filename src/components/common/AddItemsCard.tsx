@@ -6,14 +6,44 @@ import { Modal } from "../ui/modal";
 import Label from "../form/Label";
 
 import Button from "../ui/button/Button";
+import { connectPlatform } from "@/app/actions/connectPlatform";
 
 const AddItemsCard: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModal();
-
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
+
+  const handleConnect = async () => {
+    if (!selectedPlatform) {
+      setError("Please select a platform to connect");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const redirectUrl = await connectPlatform(
+        selectedPlatform as "instagram" | "whatsapp"
+      );
+      window.open(
+        redirectUrl,
+        "InstagramConnectPopup",
+        "width=600,height=700,top=100,left=200"
+      );
+    } catch (err) {
+      console.error("Failed to connect platform:", err);
+      setError("Failed to connect platform. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleClose = () => {
-    closeModal;
+    closeModal();
+    setSelectedPlatform("");
+    setError("");
   };
 
   return (
@@ -65,7 +95,7 @@ const AddItemsCard: React.FC = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={closeModal}
+        onClose={handleClose}
         className="max-w-[900px] p-5 lg:p-10"
       >
         <div className="flex-1">
@@ -109,7 +139,7 @@ const AddItemsCard: React.FC = () => {
                       : "text-gray-500"
                   }`}
                 >
-                  Business Account
+                  Connect your business account for advanced features
                 </p>
                 {selectedPlatform === "instagram-business" && (
                   <div className="mt-2">
@@ -144,6 +174,15 @@ const AddItemsCard: React.FC = () => {
                 >
                   WhatsApp Business
                 </h3>
+                <p
+                  className={`text-sm mt-1 ${
+                    selectedPlatform === "whatsapp"
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Standard WhatsApp Business integration
+                </p>
                 {selectedPlatform === "whatsapp" && (
                   <div className="mt-2">
                     <div className="w-4 h-4 bg-green-500 rounded-full mx-auto"></div>
@@ -176,6 +215,15 @@ const AddItemsCard: React.FC = () => {
                 >
                   Instagram
                 </h3>
+                <p
+                  className={`text-sm mt-1 ${
+                    selectedPlatform === "instagram"
+                      ? "text-pink-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Personal Instagram account connection
+                </p>
                 {selectedPlatform === "instagram" && (
                   <div className="mt-2">
                     <div className="w-4 h-4 bg-pink-500 rounded-full mx-auto"></div>
@@ -208,6 +256,15 @@ const AddItemsCard: React.FC = () => {
                 >
                   Web Live Chat
                 </h3>
+                <p
+                  className={`text-sm mt-1 ${
+                    selectedPlatform === "webchat"
+                      ? "text-gray-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Add live chat widget to your website
+                </p>
                 {selectedPlatform === "webchat" && (
                   <div className="mt-2">
                     <div className="w-4 h-4 bg-gray-500 rounded-full mx-auto"></div>
@@ -290,6 +347,15 @@ const AddItemsCard: React.FC = () => {
                 >
                   Messenger
                 </h3>
+                <p
+                  className={`text-sm mt-1 ${
+                    selectedPlatform === "messenger"
+                      ? "text-blue-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Facebook Messenger integration
+                </p>
                 {selectedPlatform === "messenger" && (
                   <div className="mt-2">
                     <div className="w-4 h-4 bg-blue-500 rounded-full mx-auto"></div>
@@ -297,6 +363,35 @@ const AddItemsCard: React.FC = () => {
                 )}
               </div>
             </div>
+          </div>
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-3">
+            <Button
+              onClick={handleClose}
+              variant="outline"
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConnect}
+              disabled={!selectedPlatform || isLoading}
+              className="min-w-[120px]"
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Connecting...
+                </div>
+              ) : (
+                "Connect Platform"
+              )}
+            </Button>
           </div>
         </div>
       </Modal>

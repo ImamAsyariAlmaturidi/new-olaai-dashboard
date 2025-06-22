@@ -2,7 +2,7 @@
 
 import { useLottie } from "lottie-react";
 import animation1 from "../../../public/lotties/1.json";
-import animation2 from "../../../public/lotties/2.json";
+import animation2 from "../../../public/lotties/5.json";
 import animation3 from "../../../public/lotties/3.json";
 import animation4 from "../../../public/lotties/4.json";
 import type { ReactNode } from "react";

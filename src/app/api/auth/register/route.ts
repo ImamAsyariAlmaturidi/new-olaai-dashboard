@@ -3,7 +3,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:3000";
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
 const registerSchema = z.object({
   email: z.string().email(),

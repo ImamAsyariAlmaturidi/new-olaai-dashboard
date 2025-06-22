@@ -42,7 +42,7 @@ export const middleware = async (request: NextRequest) => {
     const { payload } = await jwtVerify(token.value, JWT_SECRET);
 
     const user = {
-      id: payload.id as string,
+      _id: payload.id as string,
       email: payload.email as string,
       exp: payload.exp as number,
       iat: payload.iat as number,
@@ -58,7 +58,7 @@ export const middleware = async (request: NextRequest) => {
     // ✅ Inject header
     const headers = new Headers(request.headers);
     headers.set("x-auth-token", token.value);
-    headers.set("x-auth-id", user.id);
+    headers.set("x-auth-id", user._id);
     headers.set("x-auth-email", user.email);
     headers.set("x-auth-exp", String(user.exp));
     headers.set("x-auth-iat", String(user.iat));

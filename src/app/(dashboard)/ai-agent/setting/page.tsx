@@ -9,11 +9,8 @@ import FollowupsTab from "@/components/ai-agent/tabs/followups-tab";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-interface AgentSettingsPageProps {
-  onBackClick: () => void;
-}
 
-export default function AgentSettingsPage() {
+const AgentSettingsPage = () => {
   const [activeTab, setActiveTab] = useState("general");
   const router = useRouter();
   // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -178,4 +175,6 @@ export default function AgentSettingsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default AgentSettingsPage;

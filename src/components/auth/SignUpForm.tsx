@@ -640,9 +640,10 @@ export default function SignUpForm() {
         transition={{ duration: 0.6, delay: 0.3 }}
       >
         <p className="text-black/100 text-sm leading-relaxed">
-          Serve your customers 24/7 with AI agents that work automatically.
-          Increase sales, improve support, and grow your business faster. All in
-          one powerful AI + CRM Omnichannel platform.
+          Layani pelanggan Anda 24/7 dengan agen AI yang bekerja otomatis.
+          Tingkatkan penjualan, perbaiki dukungan, dan kembangkan bisnis Anda
+          lebih cepat. Semua dalam satu platform AI + CRM Omnichannel yang
+          powerful.
         </p>
       </motion.div>
     </div>

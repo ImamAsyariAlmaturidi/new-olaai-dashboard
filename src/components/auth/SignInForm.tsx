@@ -121,7 +121,7 @@ export default function ModernLoginCard() {
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <svg
-                  className="w-5 h-5 text-white/70"
+                  className="w-5 h-5 text-black/70"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -163,7 +163,7 @@ export default function ModernLoginCard() {
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <svg
-                  className="w-5 h-5 text-white/70"
+                  className="w-5 h-5 text-black/70"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

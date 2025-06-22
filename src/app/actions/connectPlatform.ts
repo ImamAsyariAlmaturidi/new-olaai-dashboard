@@ -4,8 +4,7 @@
 import { cookies } from "next/headers";
 
 type PlatformType = "instagram" | "whatsapp";
-const backendUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "https://api.olaai.id/api";
+const backendUrl = process.env.BACKEND_URL || "https://api.olaai.id/api";
 export async function connectPlatform(platform: PlatformType): Promise<string> {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;

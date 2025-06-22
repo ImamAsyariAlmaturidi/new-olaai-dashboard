@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import type { Agent } from "@/app/(dashboard)/ai-agent/page";
-import { ArrowLeft, Settings, FileText, Zap, Clock, ChevronRight, Menu, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Settings,
+  FileText,
+  Zap,
+  Clock,
+  ChevronRight,
+  Menu,
+  X,
+} from "lucide-react";
 import Button from "../ui/button/Button";
 import GeneralTab from "./tabs/general-tab";
 import KnowledgeTab from "./tabs/knowledge-tab";
@@ -14,7 +23,10 @@ interface AgentSettingsPageProps {
   onBackClick: () => void;
 }
 
-export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsPageProps) {
+export default function AgentSettingsPage({
+  agent,
+  onBackClick,
+}: AgentSettingsPageProps) {
   const [activeTab, setActiveTab] = useState("general");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -65,7 +77,7 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
   const renderTabContent = () => {
     switch (activeTab) {
       case "general":
-        return <GeneralTab agent={agent} />;
+        return <GeneralTab />;
       case "knowledge":
         return <KnowledgeTab />;
       case "integrations":
@@ -73,7 +85,7 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
       case "followups":
         return <FollowupsTab />;
       default:
-        return <GeneralTab agent={agent} />;
+        return <GeneralTab />;
     }
   };
 
@@ -101,7 +113,11 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="shadow-sm hover:shadow-md transition-all duration-200"
             >
-              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {isMobileMenuOpen ? (
+                <X className="w-4 h-4" />
+              ) : (
+                <Menu className="w-4 h-4" />
+              )}
               <span className="ml-2 hidden xs:inline">Menu</span>
             </Button>
           </div>
@@ -114,7 +130,9 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
               <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent truncate">
                 {agent.name}
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600 truncate">{agent.template}</p>
+              <p className="text-xs sm:text-sm text-slate-600 truncate">
+                {agent.template}
+              </p>
             </div>
           </div>
         </div>
@@ -135,9 +153,15 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
                       : "bg-white border border-slate-200 text-slate-700 hover:shadow-sm"
                   }`}
                 >
-                  <TabIcon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-600"}`} />
+                  <TabIcon
+                    className={`w-4 h-4 ${
+                      isActive ? "text-white" : "text-slate-600"
+                    }`}
+                  />
                   <span
-                    className={`text-sm font-medium ${isActive ? "text-white" : "text-slate-900"}`}
+                    className={`text-sm font-medium ${
+                      isActive ? "text-white" : "text-slate-900"
+                    }`}
                   >
                     {tab.shortLabel || tab.label}
                   </span>
@@ -154,7 +178,9 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
           <div className="fixed inset-x-0 top-0 bg-white border-b border-slate-200 max-h-screen overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-slate-900">Navigation</h3>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Navigation
+                </h3>
                 <Button size="sm" onClick={() => setIsMobileMenuOpen(false)}>
                   <X className="w-5 h-5" />
                 </Button>
@@ -178,14 +204,22 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
                       }`}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`p-2 rounded-lg ${isActive ? "bg-white/20" : tab.bgColor}`}>
+                        <div
+                          className={`p-2 rounded-lg ${
+                            isActive ? "bg-white/20" : tab.bgColor
+                          }`}
+                        >
                           <TabIcon
-                            className={`w-5 h-5 ${isActive ? "text-white" : "text-slate-600"}`}
+                            className={`w-5 h-5 ${
+                              isActive ? "text-white" : "text-slate-600"
+                            }`}
                           />
                         </div>
                         <div className="flex-1">
                           <div
-                            className={`font-medium ${isActive ? "text-white" : "text-slate-900"}`}
+                            className={`font-medium ${
+                              isActive ? "text-white" : "text-slate-900"
+                            }`}
                           >
                             {tab.label}
                           </div>
@@ -225,7 +259,9 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
               <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
                 {agent.name}
               </h1>
-              <p className="text-slate-600 text-sm">Configure your AI agent settings</p>
+              <p className="text-slate-600 text-sm">
+                Configure your AI agent settings
+              </p>
             </div>
           </div>
         </div>
@@ -238,8 +274,12 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
               <div className="sticky top-6">
                 <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
                   <div className="p-6 border-b border-slate-100">
-                    <h3 className="font-semibold text-slate-900 mb-1">Settings</h3>
-                    <p className="text-sm text-slate-500">Manage your AI agent configuration</p>
+                    <h3 className="font-semibold text-slate-900 mb-1">
+                      Settings
+                    </h3>
+                    <p className="text-sm text-slate-500">
+                      Manage your AI agent configuration
+                    </p>
                   </div>
                   <nav className="p-2">
                     {tabs.map((tab) => {
@@ -308,8 +348,12 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
                     <div className="w-16 h-16 bg-gradient-to-br from-slate-600 to-slate-700 rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 shadow-lg">
                       {agent.avatar}
                     </div>
-                    <h4 className="font-semibold text-slate-900 mb-1 truncate">{agent.name}</h4>
-                    <p className="text-sm text-slate-500 mb-3 truncate">{agent.template}</p>
+                    <h4 className="font-semibold text-slate-900 mb-1 truncate">
+                      {agent.name}
+                    </h4>
+                    <p className="text-sm text-slate-500 mb-3 truncate">
+                      {agent.template}
+                    </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-slate-400">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                       Active
@@ -334,14 +378,18 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
                       <h2 className="text-2xl font-bold text-slate-900 truncate">
                         {currentTab?.label}
                       </h2>
-                      <p className="text-slate-600 line-clamp-2">{currentTab?.description}</p>
+                      <p className="text-slate-600 line-clamp-2">
+                        {currentTab?.description}
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 {/* Desktop Tab Content */}
                 <div className="p-6">
-                  <div className="animate-in fade-in-0 duration-300">{renderTabContent()}</div>
+                  <div className="animate-in fade-in-0 duration-300">
+                    {renderTabContent()}
+                  </div>
                 </div>
               </div>
             </div>
@@ -371,7 +419,9 @@ export default function AgentSettingsPage({ agent, onBackClick }: AgentSettingsP
 
               {/* Mobile Tab Content */}
               <div className="p-4 sm:p-6">
-                <div className="animate-in fade-in-0 duration-300">{renderTabContent()}</div>
+                <div className="animate-in fade-in-0 duration-300">
+                  {renderTabContent()}
+                </div>
               </div>
             </div>
           </div>

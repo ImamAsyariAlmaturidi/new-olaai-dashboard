@@ -2,22 +2,21 @@
 
 import { NextResponse, NextRequest } from "next/server";
 
+const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
   try {
-    const res = await fetch("https://api.example.com/auth/login", {
+    const res = await fetch(`${backendUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
+
     if (!res.ok) {
       const errorData = await res.json();
-      return NextResponse.json(
-        { error: errorData.message || "Login failed" },
-        { status: res.status }
-      );
+      return NextResponse.json({ error: errorData.error });
     }
     const data = await res.json();
     return NextResponse.json(

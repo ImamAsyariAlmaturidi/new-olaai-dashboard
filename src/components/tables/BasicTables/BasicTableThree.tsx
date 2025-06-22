@@ -208,34 +208,19 @@ export default function BasicTableThree() {
           <Table>
             <TableHeader className="border-gray-100 border-y dark:border-white/[0.05]">
               <TableRow>
-                <TableCell
-                  isHeader
-                  className="py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                >
+                <TableCell className="py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   Name
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                >
+                <TableCell className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   Date
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                >
+                <TableCell className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   Price
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                >
+                <TableCell className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   Category
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                >
+                <TableCell className="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   Status
                 </TableCell>
               </TableRow>

@@ -138,34 +138,19 @@ export default function BasicTableFive() {
           {/* Table Header */}
           <TableHeader className="border-gray-100 border-y dark:border-white/[0.05]">
             <TableRow>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
-              >
+              <TableCell className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400">
                 Products
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
-              >
+              <TableCell className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400">
                 Category
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
-              >
+              <TableCell className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400">
                 Country
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
-              >
+              <TableCell className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400">
                 CR
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400"
-              >
+              <TableCell className="px-4 py-3 font-medium text-gray-500 sm:px-6 text-start text-theme-xs dark:text-gray-400">
                 Value
               </TableCell>
             </TableRow>

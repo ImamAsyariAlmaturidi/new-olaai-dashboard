@@ -1,191 +1,650 @@
 "use client";
-import Checkbox from "@/components/form/input/Checkbox";
-import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
-import Link from "next/link";
-import React, { useState } from "react";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, Mail, Building, Phone, ArrowRight } from "lucide-react";
+import { doRegister } from "@/app/actions/auth";
+import { useRouter } from "next/navigation";
+
+interface FormData {
+  email: string;
+  password: string;
+  name: string;
+  businessName: string;
+  phoneNumber: string;
+}
 
 export default function SignUpForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  return (
-    <div className="flex flex-col flex-1 lg:w-1/2 w-full overflow-y-auto no-scrollbar">
-      <div className="w-full max-w-md sm:pt-10 mx-auto mb-5">
-        <Link
-          href="/"
-          className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-        >
-          <ChevronLeftIcon />
-          Back to dashboard
-        </Link>
-      </div>
-      <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-        <div>
-          <div className="mb-5 sm:mb-8">
-            <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Sign Up
-            </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign up!
-            </p>
-          </div>
-          <div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18.7511 10.1944C18.7511 9.47495 18.6915 8.94995 18.5626 8.40552H10.1797V11.6527H15.1003C15.0011 12.4597 14.4654 13.675 13.2749 14.4916L13.2582 14.6003L15.9087 16.6126L16.0924 16.6305C17.7788 15.1041 18.7511 12.8583 18.7511 10.1944Z"
-                    fill="#4285F4"
-                  />
-                  <path
-                    d="M10.1788 18.75C12.5895 18.75 14.6133 17.9722 16.0915 16.6305L13.274 14.4916C12.5201 15.0068 11.5081 15.3666 10.1788 15.3666C7.81773 15.3666 5.81379 13.8402 5.09944 11.7305L4.99473 11.7392L2.23868 13.8295L2.20264 13.9277C3.67087 16.786 6.68674 18.75 10.1788 18.75Z"
-                    fill="#34A853"
-                  />
-                  <path
-                    d="M5.10014 11.7305C4.91165 11.186 4.80257 10.6027 4.80257 9.99992C4.80257 9.3971 4.91165 8.81379 5.09022 8.26935L5.08523 8.1534L2.29464 6.02954L2.20333 6.0721C1.5982 7.25823 1.25098 8.5902 1.25098 9.99992C1.25098 11.4096 1.5982 12.7415 2.20333 13.9277L5.10014 11.7305Z"
-                    fill="#FBBC05"
-                  />
-                  <path
-                    d="M10.1789 4.63331C11.8554 4.63331 12.9864 5.34303 13.6312 5.93612L16.1511 3.525C14.6035 2.11528 12.5895 1.25 10.1789 1.25C6.68676 1.25 3.67088 3.21387 2.20264 6.07218L5.08953 8.26943C5.81381 6.15972 7.81776 4.63331 10.1789 4.63331Z"
-                    fill="#EB4335"
-                  />
-                </svg>
-                Sign up with Google
-              </button>
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
-                <svg
-                  width="21"
-                  className="fill-current"
-                  height="20"
-                  viewBox="0 0 21 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M15.6705 1.875H18.4272L12.4047 8.75833L19.4897 18.125H13.9422L9.59717 12.4442L4.62554 18.125H1.86721L8.30887 10.7625L1.51221 1.875H7.20054L11.128 7.0675L15.6705 1.875ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
-                </svg>
-                Sign up with X
-              </button>
-            </div>
-            <div className="relative py-3 sm:py-5">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="p-2 text-gray-400 bg-white dark:bg-gray-900 sm:px-5 sm:py-2">
-                  Or
-                </span>
-              </div>
-            </div>
-            <form>
-              <div className="space-y-5">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  {/* <!-- First Name --> */}
-                  <div className="sm:col-span-1">
-                    <Label>
-                      First Name<span className="text-error-500">*</span>
-                    </Label>
-                    <Input
-                      type="text"
-                      id="fname"
-                      name="fname"
-                      placeholder="Enter your first name"
-                    />
-                  </div>
-                  {/* <!-- Last Name --> */}
-                  <div className="sm:col-span-1">
-                    <Label>
-                      Last Name<span className="text-error-500">*</span>
-                    </Label>
-                    <Input
-                      type="text"
-                      id="lname"
-                      name="lname"
-                      placeholder="Enter your last name"
-                    />
-                  </div>
-                </div>
-                {/* <!-- Email --> */}
-                <div>
-                  <Label>
-                    Email<span className="text-error-500">*</span>
-                  </Label>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
-                  />
-                </div>
-                {/* <!-- Password --> */}
-                <div>
-                  <Label>
-                    Password<span className="text-error-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      placeholder="Enter your password"
-                      type={showPassword ? "text" : "password"}
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
-                      )}
-                    </span>
-                  </div>
-                </div>
-                {/* <!-- Checkbox --> */}
-                <div className="flex items-center gap-3">
-                  <Checkbox
-                    className="w-5 h-5"
-                    checked={isChecked}
-                    onChange={setIsChecked}
-                  />
-                  <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
-                    By creating an account means you agree to the{" "}
-                    <span className="text-gray-800 dark:text-white/90">
-                      Terms and Conditions,
-                    </span>{" "}
-                    and our{" "}
-                    <span className="text-gray-800 dark:text-white">
-                      Privacy Policy
-                    </span>
-                  </p>
-                </div>
-                {/* <!-- Button --> */}
-                <div>
-                  <button className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                    Sign Up
-                  </button>
-                </div>
-              </div>
-            </form>
+  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+    name: "",
+    businessName: "",
+    phoneNumber: "",
+  });
 
-            <div className="mt-5">
-              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Already have an account?
-                <Link
-                  href="/signin"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentStep < 3) {
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep((prev) => prev - 1);
+    }
+  };
+
+  const handleRegister = async () => {
+    setIsLoading(true);
+    setErrors({});
+    setGeneralError("");
+
+    try {
+      const response = await doRegister({
+        email: formData.email,
+        password: formData.password,
+        businessName: formData.businessName,
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+      });
+
+      if (response.success) {
+        setIsSuccess(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+        return;
+      }
+
+      if (response.errors && typeof response.errors === "object") {
+        const errorMap = response.errors as Record<string, string[]>;
+        const formattedErrors: Record<string, string> = {};
+
+        if (errorMap["api"]?.length) {
+          setGeneralError(errorMap["api"][0]);
+          return;
+        }
+
+        Object.keys(errorMap).forEach((field) => {
+          if (errorMap[field]?.length) {
+            formattedErrors[field] = errorMap[field][0];
+          }
+        });
+
+        setErrors(formattedErrors);
+
+        const errorFields = Object.keys(formattedErrors);
+        let targetStep = currentStep;
+
+        if (
+          errorFields.some((field) => ["email", "password"].includes(field))
+        ) {
+          targetStep = 1;
+        } else if (
+          errorFields.some((field) => ["name", "businessName"].includes(field))
+        ) {
+          targetStep = 2;
+        } else if (
+          errorFields.some((field) => ["phoneNumber"].includes(field))
+        ) {
+          targetStep = 3;
+        }
+
+        if (targetStep !== currentStep) {
+          setCurrentStep(targetStep);
+        }
+        return;
+      }
+
+      setGeneralError("Registration failed. Please try again.");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setGeneralError("Internal error, please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const isStepValid = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.email && formData.password;
+      case 2:
+        return formData.name && formData.businessName;
+      case 3:
+        return formData.phoneNumber;
+      default:
+        return false;
+    }
+  };
+
+  const stepVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -50 },
+  };
+
+  if (isSuccess) {
+    return (
+      <div
+        className="min-h-screen flex flex-col items-center justify-center p-4"
+        style={{ backgroundColor: "#E6DCE7" }}
+      >
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div
+            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+            style={{ backgroundColor: "#7695FF" }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <motion.svg
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </motion.svg>
+          </motion.div>
+          <h2 className="text-2xl font-bold mb-2 text-white">
+            Registration Successful!
+          </h2>
+          <p className="text-white/80">
+            Your account has been created successfully. Welcome aboard!
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden"
+      style={{ backgroundColor: "#E6DCE7" }}
+    >
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-20 left-20 w-72 h-72 rounded-full blur-3xl"
+          style={{ backgroundColor: "#7695FF40" }}
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl"
+          style={{ backgroundColor: "#9DBDFF30" }}
+          animate={{
+            x: [0, -80, 0],
+            y: [0, 60, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
+
+      {/* Signup Card */}
+      <motion.div
+        className="rounded-3xl p-6 w-full max-w-md border-2 relative z-10"
+        style={{
+          backgroundColor: "#7695FF",
+          borderColor: "#9DBDFF",
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-white mb-1">Create Account</h1>
+          <p className="text-white/80 text-sm">Join us today</p>
+        </div>
+
+        {/* Compact Progress indicator */}
+        <div className="mb-6">
+          <div className="flex items-center justify-center mb-3">
+            {[1, 2, 3].map((step, index) => (
+              <div key={step} className="flex items-center">
+                <motion.div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                    currentStep >= step
+                      ? "bg-white border-white"
+                      : "bg-transparent border-white/50"
+                  }`}
+                  animate={{
+                    backgroundColor:
+                      currentStep >= step ? "#FFFFFF" : "transparent",
+                    borderColor:
+                      currentStep >= step ? "#FFFFFF" : "rgba(255,255,255,0.5)",
+                  }}
+                  transition={{ duration: 0.3 }}
                 >
-                  Sign In
-                </Link>
-              </p>
-            </div>
+                  {step === 1 && (
+                    <Mail
+                      className={`w-4 h-4 ${
+                        currentStep >= step
+                          ? "text-purple-600"
+                          : "text-white/70"
+                      }`}
+                    />
+                  )}
+                  {step === 2 && (
+                    <Building
+                      className={`w-4 h-4 ${
+                        currentStep >= step
+                          ? "text-purple-600"
+                          : "text-white/70"
+                      }`}
+                    />
+                  )}
+                  {step === 3 && (
+                    <Phone
+                      className={`w-4 h-4 ${
+                        currentStep >= step
+                          ? "text-purple-600"
+                          : "text-white/70"
+                      }`}
+                    />
+                  )}
+                </motion.div>
+                {index < 2 && (
+                  <ArrowRight className="w-4 h-4 text-white/50 mx-2" />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="w-full rounded-full h-1 bg-white/30">
+            <motion.div
+              className="h-1 rounded-full bg-white"
+              animate={{ width: `${(currentStep / 3) * 100}%` }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            />
           </div>
         </div>
-      </div>
+
+        {/* General Error Display */}
+        {generalError && (
+          <motion.div
+            className="border rounded-xl p-3 mb-4 bg-red-100/90 border-red-300"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <p className="text-sm text-red-600">{generalError}</p>
+          </motion.div>
+        )}
+
+        {/* Form Steps */}
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          <AnimatePresence mode="wait">
+            {/* Step 1: Email and Password */}
+            {currentStep === 1 && (
+              <motion.div
+                key="step1"
+                variants={stepVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+                className="space-y-4"
+              >
+                <div className="space-y-2">
+                  <label className="text-white font-semibold block text-sm">
+                    Email
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Mail className="w-4 h-4 text-black/70" />
+                    </div>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => {
+                        handleInputChange("email", e.target.value);
+                        if (errors.email) {
+                          setErrors((prev) => ({ ...prev, email: "" }));
+                        }
+                      }}
+                      className="w-full pl-11 pr-4 py-3 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 border-2"
+                      style={{
+                        backgroundColor: "#FFD7C4",
+                        borderColor: errors.email ? "#DC2626" : "#9DBDFF",
+                      }}
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+                  {errors.email && (
+                    <motion.p
+                      className="text-sm text-red-200 bg-red-500/20 px-2 py-1 rounded"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      {errors.email}
+                    </motion.p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-white font-semibold block text-sm">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg
+                        className="w-4 h-4 text-black/70"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) => {
+                        handleInputChange("password", e.target.value);
+                        if (errors.password) {
+                          setErrors((prev) => ({ ...prev, password: "" }));
+                        }
+                      }}
+                      className="w-full pl-11 pr-11 py-3 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 border-2"
+                      style={{
+                        backgroundColor: "#FFD7C4",
+                        borderColor: errors.password ? "#DC2626" : "#9DBDFF",
+                      }}
+                      placeholder="Create a password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <motion.p
+                      className="text-sm text-red-200 bg-red-500/20 px-2 py-1 rounded"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      {errors.password}
+                    </motion.p>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Step 2: Personal Info */}
+            {currentStep === 2 && (
+              <motion.div
+                key="step2"
+                variants={stepVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+                className="space-y-4"
+              >
+                <div className="space-y-2">
+                  <label className="text-white font-semibold block text-sm">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => {
+                      handleInputChange("name", e.target.value);
+                      if (errors.name) {
+                        setErrors((prev) => ({ ...prev, name: "" }));
+                      }
+                    }}
+                    className="w-full px-4 py-3 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 border-2"
+                    style={{
+                      backgroundColor: "#FFD7C4",
+                      borderColor: errors.name ? "#DC2626" : "#9DBDFF",
+                    }}
+                    placeholder="Enter your full name"
+                    required
+                  />
+                  {errors.name && (
+                    <motion.p
+                      className="text-sm text-red-200 bg-red-500/20 px-2 py-1 rounded"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      {errors.name}
+                    </motion.p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-white font-semibold block text-sm">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.businessName}
+                    onChange={(e) => {
+                      handleInputChange("businessName", e.target.value);
+                      if (errors.businessName) {
+                        setErrors((prev) => ({ ...prev, businessName: "" }));
+                      }
+                    }}
+                    className="w-full px-4 py-3 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 border-2"
+                    style={{
+                      backgroundColor: "#FFD7C4",
+                      borderColor: errors.businessName ? "#DC2626" : "#9DBDFF",
+                    }}
+                    placeholder="Enter your business name"
+                    required
+                  />
+                  {errors.businessName && (
+                    <motion.p
+                      className="text-sm text-red-200 bg-red-500/20 px-2 py-1 rounded"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      {errors.businessName}
+                    </motion.p>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Step 3: Contact */}
+            {currentStep === 3 && (
+              <motion.div
+                key="step3"
+                variants={stepVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+                className="space-y-4"
+              >
+                <div className="space-y-2">
+                  <label className="text-white font-semibold block text-sm">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.phoneNumber}
+                    onChange={(e) => {
+                      handleInputChange("phoneNumber", e.target.value);
+                      if (errors.phoneNumber) {
+                        setErrors((prev) => ({ ...prev, phoneNumber: "" }));
+                      }
+                    }}
+                    className="w-full px-4 py-3 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 border-2"
+                    style={{
+                      backgroundColor: "#FFD7C4",
+                      borderColor: errors.phoneNumber ? "#DC2626" : "#9DBDFF",
+                    }}
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                  {errors.phoneNumber && (
+                    <motion.p
+                      className="text-sm text-red-200 bg-red-500/20 px-2 py-1 rounded"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      {errors.phoneNumber}
+                    </motion.p>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between pt-4">
+            <button
+              type="button"
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+              className="px-4 py-2 rounded-2xl font-medium transition-all duration-200 text-sm"
+              style={{
+                backgroundColor:
+                  currentStep === 1
+                    ? "rgba(255,255,255,0.2)"
+                    : "rgba(255,255,255,0.9)",
+                color: currentStep === 1 ? "rgba(255,255,255,0.5)" : "#7695FF",
+                cursor: currentStep === 1 ? "not-allowed" : "pointer",
+                opacity: currentStep === 1 ? 0.5 : 1,
+              }}
+            >
+              Previous
+            </button>
+
+            {currentStep < 3 ? (
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={!isStepValid()}
+                className="px-6 py-2 rounded-2xl font-medium transition-all duration-200 text-sm"
+                style={{
+                  backgroundColor: isStepValid()
+                    ? "#FF9874"
+                    : "rgba(255,255,255,0.2)",
+                  borderColor: "#FFD7C4",
+                  color: "white",
+                  cursor: isStepValid() ? "pointer" : "not-allowed",
+                  opacity: isStepValid() ? 1 : 0.5,
+                }}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleRegister}
+                disabled={!isStepValid() || isLoading}
+                className="px-6 py-2 rounded-2xl font-medium transition-all duration-200 text-sm"
+                style={{
+                  backgroundColor:
+                    isStepValid() && !isLoading
+                      ? "#FF9874"
+                      : "rgba(255,255,255,0.2)",
+                  color: "white",
+                  cursor:
+                    isStepValid() && !isLoading ? "pointer" : "not-allowed",
+                  opacity: isStepValid() && !isLoading ? 1 : 0.5,
+                }}
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Creating...</span>
+                  </div>
+                ) : (
+                  "Create Account"
+                )}
+              </button>
+            )}
+          </div>
+        </form>
+
+        {/* Login Link */}
+        <div className="text-center mt-4">
+          <p className="text-white/80 text-sm">
+            Already have an account?{" "}
+            <button
+              onClick={() => router.push("/signin")} // or your signin route
+              className="font-medium transition-colors hover:underline"
+              style={{ color: "#FFD7C4" }}
+            >
+              Sign In
+            </button>
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Marketing Text - Outside the card */}
+      <motion.div
+        className="mt-6 text-center max-w-md relative z-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <p className="text-black/100 text-sm leading-relaxed">
+          Serve your customers 24/7 with AI agents that work automatically.
+          Increase sales, improve support, and grow your business faster. All in
+          one powerful AI + CRM Omnichannel platform.
+        </p>
+      </motion.div>
     </div>
   );
 }

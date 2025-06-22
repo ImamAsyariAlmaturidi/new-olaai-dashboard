@@ -14,28 +14,16 @@ export default function InvoiceTable() {
         <Table>
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05] ">
             <TableRow>
-              <TableCell
-                isHeader
-                className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400"
-              >
+              <TableCell className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400">
                 #
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400"
-              >
+              <TableCell className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400">
                 Product
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400"
-              >
+              <TableCell className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400">
                 Quantity
               </TableCell>
-              <TableCell
-                isHeader
-                className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400"
-              >
+              <TableCell className="px-5 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-400">
                 Unit Cost
               </TableCell>
             </TableRow>

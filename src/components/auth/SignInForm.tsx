@@ -26,7 +26,10 @@ export default function ModernLoginCard() {
       const response = await doLogin(email, password);
 
       if (response?.success) {
-        router.push("/");
+        // delay sedikit untuk memastikan cookie tersimpan
+        setTimeout(() => {
+          router.push("/");
+        }, 200);
       } else {
         // Handle different types of errors
         if (response?.error && typeof response.error === "object") {

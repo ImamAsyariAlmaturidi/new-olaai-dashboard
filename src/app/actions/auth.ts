@@ -48,12 +48,16 @@ export async function doRegister(data: RegisterData) {
   }
 
   const cookieStore = await cookies();
+
   cookieStore.set("token", result.token, {
+    // Meng-set cookie agar hanya bisa diakses melalui HTTP(S)
     httpOnly: true,
+    // Meng-set cookie agar hanya bisa diakses melalui HTTPS, karena ini hanya untuk development, maka kita akan set false
     secure: false,
-    expires: new Date(Date.now() + 1000 * 60 * 60),
+    // Meng-set expiration time dari cookies
+    expires: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+    // Meng-set cookie agar hanya bisa diakses melalui domain yang sama
     sameSite: "strict",
-    path: "/",
   });
 
   return {
@@ -91,10 +95,15 @@ export async function doLogin(email: string, password: string) {
   }
 
   const cookieStore = await cookies();
+
   cookieStore.set("token", result.token, {
+    // Meng-set cookie agar hanya bisa diakses melalui HTTP(S)
     httpOnly: true,
+    // Meng-set cookie agar hanya bisa diakses melalui HTTPS, karena ini hanya untuk development, maka kita akan set false
     secure: false,
-    expires: new Date(Date.now() + 1000 * 60 * 60),
+    // Meng-set expiration time dari cookies
+    expires: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+    // Meng-set cookie agar hanya bisa diakses melalui domain yang sama
     sameSite: "strict",
   });
 

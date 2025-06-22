@@ -19,59 +19,61 @@ export const middleware = async (request: NextRequest) => {
 
   const isPublicRoute = isAuthPage || isApiAuth || isPublicAsset;
 
-  // ✅ Langsung lanjutkan untuk public route
+  // ✅ 1. JIKA PUBLIC ROUTE
   if (isPublicRoute) {
     if (token && isAuthPage) {
-      // ⛔ Kalau sudah login dan akses /signin /signup, redirect ke home
+      // ⛔ Jika sudah login, redirect dari /signin ke home
       return NextResponse.redirect(new URL("/", request.url));
     }
-
     return NextResponse.next();
   }
 
-  // ⛔ Cek token hanya untuk protected route
+  // ✅ 2. JIKA PROTECTED ROUTE
   if (!token) {
+    // ⛔ Akses API tanpa token
     if (pathname.startsWith("/api")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    // ⛔ Akses page tanpa token (kecuali auth page yang udah ditangani di atas)
     return NextResponse.redirect(new URL("/signin", request.url));
   }
 
-  // ✅ Verifikasi token
   try {
+    // ✅ Verifikasi token
     const { payload } = await jwtVerify(token.value, JWT_SECRET);
 
-    const user = {
-      _id: payload.id as string,
-      email: payload.email as string,
-      exp: payload.exp as number,
-      iat: payload.iat as number,
+    const { _id, email, exp, iat } = payload as {
+      _id: string;
+      email: string;
+      exp: number;
+      iat: number;
     };
 
-    // ⛔ Token expired
-    if (Date.now() >= user.exp * 1000) {
-      const response = NextResponse.redirect(new URL("/signin", request.url));
-      response.cookies.set("token", "", { maxAge: 0 });
-      return response;
+    // ⚠️ Token expired? Logging aja. Jangan dihapus di sini.
+    if (Date.now() >= exp * 1000) {
+      console.warn("⚠️ Token expired — client should handle refresh.");
     }
 
-    // ✅ Inject header
+    // ✅ Inject user info ke headers
     const headers = new Headers(request.headers);
+    headers.set("x-auth-id", _id);
+    headers.set("x-auth-email", email);
     headers.set("x-auth-token", token.value);
-    headers.set("x-auth-id", user._id);
-    headers.set("x-auth-email", user.email);
-    headers.set("x-auth-exp", String(user.exp));
-    headers.set("x-auth-iat", String(user.iat));
+    headers.set("x-auth-exp", String(exp));
+    headers.set("x-auth-iat", String(iat));
 
     return NextResponse.next({
-      request: {
-        headers,
-      },
+      request: { headers },
     });
   } catch (err) {
-    // ⛔ Token invalid
-    const response = NextResponse.redirect(new URL("/signin", request.url));
-    response.cookies.set("token", "", { maxAge: 0 });
-    return response;
+    // ⛔ Token corrupt / tidak valid
+    console.error("❌ Token verification failed:", err);
+
+    if (pathname.startsWith("/api")) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
 };

@@ -1,10 +1,8 @@
 "use server";
 import { NextResponse, NextRequest } from "next/server";
-import { cookies } from "next/headers";
 import { z } from "zod";
 
-const backendUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+const backendUrl = process.env.BACKEND_URL || "http://localhost:3000";
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -56,7 +54,11 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: "Registration successful", user: data.user },
+      {
+        message: "Registration successful",
+        user: data.user,
+        token: data.token,
+      },
       { status: 201 }
     );
   } catch (error) {

@@ -1,9 +1,9 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
-const backendUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
   try {
@@ -19,11 +19,14 @@ export async function POST(request: NextRequest) {
       const errorData = await res.json();
       return NextResponse.json({ error: errorData.error });
     }
+
     const data = await res.json();
-    return NextResponse.json(
-      { message: "Login successful", user: data.user, token: data.token },
+    const response = NextResponse.json(
+      { message: "Login success", user: data.user, token: data.token },
       { status: 200 }
     );
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

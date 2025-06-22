@@ -8,12 +8,14 @@ import IntegrationsTab from "@/components/ai-agent/tabs/integrations-tab";
 import FollowupsTab from "@/components/ai-agent/tabs/followups-tab";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 interface AgentSettingsPageProps {
   onBackClick: () => void;
 }
 
-export default function AgentSettingsPage({ onBackClick }: AgentSettingsPageProps) {
+export default function AgentSettingsPage() {
   const [activeTab, setActiveTab] = useState("general");
+  const router = useRouter();
   // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const tabs = [
@@ -85,7 +87,7 @@ export default function AgentSettingsPage({ onBackClick }: AgentSettingsPageProp
               <Button
                 variant="outline"
                 size="sm"
-                onClick={onBackClick}
+                onClick={() => router.back()}
                 className="flex items-center gap-2 flex-shrink-0 dark:border-gray-600 dark:hover:bg-gray-700"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -105,7 +107,8 @@ export default function AgentSettingsPage({ onBackClick }: AgentSettingsPageProp
                   HR
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, doloribus?
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic,
+                  doloribus?
                 </p>
               </div>
             </div>
@@ -150,7 +153,9 @@ export default function AgentSettingsPage({ onBackClick }: AgentSettingsPageProp
                   <div
                     className={`p-2 rounded-lg bg-gradient-to-r ${currentTab?.color} flex-shrink-0`}
                   >
-                    {currentTab?.icon && <currentTab.icon className="w-5 h-5 text-white" />}
+                    {currentTab?.icon && (
+                      <currentTab.icon className="w-5 h-5 text-white" />
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">

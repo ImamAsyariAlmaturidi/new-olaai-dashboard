@@ -5,6 +5,20 @@ import { registerSchema } from "@/schemas/registerSchema";
 import { cookies } from "next/headers";
 
 export type RegisterData = z.infer<typeof registerSchema>;
+const getApiBaseUrl = () => {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+  return new URL(baseUrl).origin;
+};
+
+const parseJsonSafe = async (response: Response) => {
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
+};
+
 export async function doRegister(data: RegisterData) {
   const parsed = registerSchema.safeParse(data);
 
@@ -15,8 +29,10 @@ export async function doRegister(data: RegisterData) {
     };
   }
 
-  const response = await fetch(`/api/auth/register`, {
-    method: "POST",
+  const response = await fetch(
+    `${getApiBaseUrl()}/api/auth/register`,
+    {
+      method: "POST",
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -24,7 +40,7 @@ export async function doRegister(data: RegisterData) {
     body: JSON.stringify(parsed.data),
   });
 
-  const result = await response.json();
+  const result = await parseJsonSafe(response);
 
   // Jika gagal parsing JSON (contohnya server return HTML / 500)
   if (!result) {
@@ -65,8 +81,8 @@ export async function doRegister(data: RegisterData) {
 }
 
 export async function doLogin(email: string, password: string) {
-  const response = await fetch(`/api/auth/login`, {
-    method: "POST",
+  const response = await fetch(`${getApiBaseUrl()}/api/auth/login`, {
+      method: "POST",
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -74,7 +90,7 @@ export async function doLogin(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
 
-  const result = await response.json();
+  const result = await parseJsonSafe(response);
 
   // Jika gagal parsing JSON (contohnya server return HTML / 500)
   if (!result) {

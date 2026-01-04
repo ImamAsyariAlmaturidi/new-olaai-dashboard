@@ -2,7 +2,19 @@
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:3000";
+const backendUrl =
+  process.env.BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:4000";
+
+const parseJsonSafe = async (response: Response) => {
+  const payloadText = await response.text();
+  try {
+    return JSON.parse(payloadText);
+  } catch {
+    return payloadText;
+  }
+};
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -42,15 +54,25 @@ export async function POST(request: NextRequest) {
       }),
     });
 
-    const data = await res.json();
+    const data = await parseJsonSafe(res);
 
     if (!res.ok) {
-      return NextResponse.json({
-        errors:
-          typeof data.error === "object"
-            ? data.error
-            : { api: [data.error || "Registration failed"] },
-      });
+      const errorPayload =
+        typeof data === "object"
+          ? data.error ?? { api: [data.message || "Registration failed"] }
+          : { api: [typeof data === "string" ? data : "Registration failed"] };
+
+      return NextResponse.json(
+        { errors: errorPayload },
+        { status: res.status }
+      );
+    }
+
+    if (typeof data !== "object" || !data.token) {
+      return NextResponse.json(
+        { errors: { api: ["Registration service returned invalid data"] } },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json(
@@ -62,6 +84,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Registration error:", error);
     return NextResponse.json(
       { errors: { api: ["Registration failed. Please try again."] } },
       { status: 500 }

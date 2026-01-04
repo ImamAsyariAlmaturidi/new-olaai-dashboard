@@ -19,7 +19,6 @@ import {
   TableIcon,
   TaskIcon,
   UserCircleIcon,
-  BoltIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 
@@ -35,16 +34,6 @@ const navItems: NavItem[] = [
     icon: <ChatIcon />,
     name: "Chat",
     path: "/chat",
-  },
-  {
-    icon: <CalenderIcon />,
-    name: "Connected Platforms",
-    path: "/connected-platforms",
-  },
-  {
-    icon: <BoltIcon />,
-    name: "AI Agent",
-    path: "/ai-agent",
   },
   // {
   //   icon: (
@@ -185,10 +174,15 @@ const supportItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isMobileOpen } = useSidebar();
+  const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
+  const isExpanded = isMobileOpen || isHovered;
 
-  const renderMenuItems = (navItems: NavItem[], menuType: "main" | "support" | "others") => (
+  const renderMenuItems = (
+    navItems: NavItem[],
+    menuType: "main" | "support" | "others"
+  ) => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
         <li key={nav.name}>
@@ -200,7 +194,7 @@ const AppSidebar: React.FC = () => {
                   ? "menu-item-active"
                   : "menu-item-inactive"
               } cursor-pointer ${
-                !isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"
+                isExpanded ? "lg:justify-start" : "lg:justify-center"
               }`}
             >
               <span
@@ -212,12 +206,10 @@ const AppSidebar: React.FC = () => {
               >
                 {nav.icon}
               </span>
-              {(isExpanded || isHovered || isMobileOpen) && (
-                <span className={`menu-item-text`}>{nav.name}</span>
-              )}
-              {(isExpanded || isHovered || isMobileOpen) && (
+              {isExpanded && <span className="menu-item-text">{nav.name}</span>}
+              {isExpanded && (
                 <ChevronDownIcon
-                  className={`ml-auto w-5 h-5 transition-transform duration-200  ${
+                  className={`ml-auto h-5 w-5 transition-transform duration-200 ${
                     openSubmenu?.type === menuType && openSubmenu?.index === index
                       ? "rotate-180 text-brand-500"
                       : ""
@@ -235,18 +227,18 @@ const AppSidebar: React.FC = () => {
               >
                 <span
                   className={`${
-                    isActive(nav.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"
-                  }`}
+                    isActive(nav.path)
+                      ? "menu-item-icon-active"
+                      : "menu-item-icon-inactive"
+                    }`}
                 >
                   {nav.icon}
                 </span>
-                {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className={`menu-item-text`}>{nav.name}</span>
-                )}
+                {isExpanded && <span className="menu-item-text">{nav.name}</span>}
               </Link>
             )
           )}
-          {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
+          {nav.subItems && isExpanded && (
             <div
               ref={(el) => {
                 subMenuRefs.current[`${menuType}-${index}`] = el;
@@ -310,7 +302,9 @@ const AppSidebar: React.FC = () => {
     type: "main" | "support" | "others";
     index: number;
   } | null>(null);
-  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
+  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
+    {}
+  );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // const isActive = (path: string) => path === pathname;
@@ -322,7 +316,11 @@ const AppSidebar: React.FC = () => {
     let submenuMatched = false;
     ["main", "support", "others"].forEach((menuType) => {
       const items =
-        menuType === "main" ? navItems : menuType === "support" ? supportItems : othersItems;
+        menuType === "main"
+          ? navItems
+          : menuType === "support"
+          ? supportItems
+          : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
@@ -357,9 +355,16 @@ const AppSidebar: React.FC = () => {
     }
   }, [openSubmenu]);
 
-  const handleSubmenuToggle = (index: number, menuType: "main" | "support" | "others") => {
+  const handleSubmenuToggle = (
+    index: number,
+    menuType: "main" | "support" | "others"
+  ) => {
     setOpenSubmenu((prevOpenSubmenu) => {
-      if (prevOpenSubmenu && prevOpenSubmenu.type === menuType && prevOpenSubmenu.index === index) {
+      if (
+        prevOpenSubmenu &&
+        prevOpenSubmenu.type === menuType &&
+        prevOpenSubmenu.index === index
+      ) {
         return null;
       }
       return { type: menuType, index };
@@ -368,20 +373,15 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-full transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
-        ${isExpanded || isMobileOpen ? "w-[290px]" : isHovered ? "w-[290px]" : "w-[90px]"}
-        ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0`}
-      onMouseEnter={() => !isExpanded && setIsHovered(true)}
+      className={`fixed left-0 top-0 z-50 mt-16 flex h-full w-[290px] flex-col border-r border-gray-200 bg-white px-5 text-gray-900 transition-all duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900 lg:mt-0 lg:w-[90px] ${
+        isHovered ? "lg:w-[290px]" : ""
+      } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className={`py-8 flex  ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-        }`}
-      >
+      <div className={`flex py-8 ${isExpanded ? "justify-start" : "lg:justify-center"}`}>
         <Link href="/">
-          {isExpanded || isHovered || isMobileOpen ? (
+          {isExpanded ? (
             <>
               <Image
                 className="dark:hidden"
@@ -399,7 +399,12 @@ const AppSidebar: React.FC = () => {
               />
             </>
           ) : (
-            <Image src="/images/logo/logo-icon.svg" alt="Logo" width={32} height={32} />
+            <Image
+              src="/images/logo/logo-icon.svg"
+              alt="Logo"
+              width={32}
+              height={32}
+            />
           )}
         </Link>
       </div>
@@ -408,37 +413,37 @@ const AppSidebar: React.FC = () => {
           <div className="flex flex-col gap-4">
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                className={`mb-4 flex text-xs uppercase leading-[20px] text-gray-400 ${
+                  isExpanded ? "justify-start" : "lg:justify-center"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? "Menu" : <HorizontaLDots />}
+                {isExpanded ? "Menu" : <HorizontaLDots />}
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                className={`mb-4 flex text-xs uppercase leading-[20px] text-gray-400 ${
+                  isExpanded ? "justify-start" : "lg:justify-center"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? "Support" : <HorizontaLDots />}
+                {isExpanded ? "Support" : <HorizontaLDots />}
               </h2>
               {renderMenuItems(supportItems, "support")}
             </div>
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                className={`mb-4 flex text-xs uppercase leading-[20px] text-gray-400 ${
+                  isExpanded ? "justify-start" : "lg:justify-center"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? "Others" : <HorizontaLDots />}
+                {isExpanded ? "Others" : <HorizontaLDots />}
               </h2>
               {renderMenuItems(othersItems, "others")}
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {isExpanded ? <SidebarWidget /> : null}
       </div>
     </aside>
   );

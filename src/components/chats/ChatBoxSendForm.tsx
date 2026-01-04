@@ -1,10 +1,35 @@
-import React from "react";
+"use client";
 
-export default function ChatBoxSendForm() {
+import React, { useState } from "react";
+
+interface ChatBoxSendFormProps {
+  disabled?: boolean;
+  onSend?: (text: string) => Promise<void> | void;
+}
+
+export default function ChatBoxSendForm({ disabled, onSend }: ChatBoxSendFormProps) {
+  const [text, setText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const canSubmit = !disabled && !!onSend && !submitting && text.trim().length > 0;
+
   return (
     <div className="sticky bottom-0 p-3 border-t border-gray-200 dark:border-gray-800">
-      <form className="flex items-center justify-between">
-        <div className="relative w-full">
+      <form
+        className="flex items-center gap-3"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (!canSubmit || !onSend) return;
+          try {
+            setSubmitting(true);
+            await onSend(text.trim());
+            setText("");
+          } finally {
+            setSubmitting(false);
+          }
+        }}
+      >
+        <div className="relative min-w-0 flex-1">
           <button className="absolute text-gray-500 -translate-y-1/2 left-1 top-1/2 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90 sm:left-3">
             <svg
               className="fill-current"
@@ -25,8 +50,13 @@ export default function ChatBoxSendForm() {
 
           <input
             type="text"
-            placeholder="Type a message"
-            className="w-full pl-12 pr-5 text-sm text-gray-800 bg-transparent border-none outline-hidden h-9 placeholder:text-gray-400 focus:border-0 focus:ring-0 dark:text-white/90"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            disabled={disabled || submitting || !onSend}
+            placeholder={
+              disabled || !onSend ? "Reply belum tersedia di dashboard" : "Type a message"
+            }
+            className="w-full pl-12 pr-5 text-sm text-gray-800 bg-transparent border-none outline-hidden h-9 placeholder:text-gray-400 focus:border-0 focus:ring-0 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white/90"
           />
         </div>
 
@@ -111,7 +141,11 @@ export default function ChatBoxSendForm() {
             </svg>
           </button>
 
-          <button className="flex items-center justify-center ml-3 text-white rounded-lg h-9 w-9 bg-brand-500 hover:bg-brand-600 xl:ml-5">
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            className="ml-3 flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-white hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60 xl:ml-5"
+          >
             <svg
               width="20"
               height="20"

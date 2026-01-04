@@ -5,9 +5,19 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { doLogout } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
+import { useBusinessContext } from "@/context/BusinessContext";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, businesses } = useBusinessContext();
+
+  const displayUserName =
+    user?.name?.trim() ||
+    (user?.email ? user.email.split("@")[0] : "") ||
+    "Account";
+
+  const displayBusinessName =
+    businesses?.[0]?.name?.trim() || user?.businessName?.trim() || "Business";
 
   const router = useRouter();
   function toggleDropdown() {
@@ -37,7 +47,9 @@ export default function UserDropdown() {
           />
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">Musharof</span>
+        <span className="block mr-1 font-medium text-theme-sm">
+          {displayBusinessName}
+        </span>
 
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
@@ -66,11 +78,16 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            Musharof Chowdhury
+            {displayBusinessName}
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            randomuser@pimjo.com
+            {displayUserName}
           </span>
+          {user?.phoneNumber && (
+            <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+              {user.phoneNumber}
+            </span>
+          )}
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">

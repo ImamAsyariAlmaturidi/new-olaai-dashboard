@@ -1,11 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { MoreDotIcon } from "@/icons";
-import Image from "next/image";
 
-export default function ChatBoxHeader() {
+interface ChatBoxHeaderProps {
+  title?: string;
+  subtitle?: string;
+}
+
+export default function ChatBoxHeader({ title, subtitle }: ChatBoxHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
@@ -16,23 +20,29 @@ export default function ChatBoxHeader() {
     setIsOpen(false);
   }
 
+  const initials = useMemo(() => {
+    const value = title?.trim();
+    if (!value) return "C";
+    return value.slice(0, 2).toUpperCase();
+  }, [title]);
+
   return (
     <div className="sticky flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-800 xl:px-6">
       <div className="flex items-center gap-3">
-        <div className="relative h-12 w-full max-w-[48px] rounded-full">
-          <Image
-            width={48}
-            height={48}
-            src="/images/user/user-17.jpg"
-            alt="profile"
-            className="object-cover object-center w-full h-full overflow-hidden rounded-full"
-          />
-          <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full border-[1.5px] border-white bg-success-500 dark:border-gray-900"></span>
+        <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-sm font-semibold text-gray-700 dark:bg-white/[0.06] dark:text-gray-200">
+          {initials}
         </div>
 
-        <h5 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-          Lindsey Curtis
-        </h5>
+        <div className="min-w-0">
+          <h5 className="truncate text-sm font-medium text-gray-800 dark:text-white/90">
+            {title || "Select Conversation"}
+          </h5>
+          {subtitle && (
+            <div className="truncate text-xs text-gray-500 dark:text-gray-400">
+              {subtitle}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center gap-3">

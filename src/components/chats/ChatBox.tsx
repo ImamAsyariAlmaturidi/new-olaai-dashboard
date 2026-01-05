@@ -56,20 +56,20 @@ export default function ChatBox({
         {!conversation && (
           <div className="flex h-full items-center justify-center">
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Pilih conversation untuk melihat pesan.
+              Select a conversation to view messages.
             </p>
           </div>
         )}
 
         {conversation && loading && (
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Memuat pesan...
+            Loading messages...
           </p>
         )}
 
         {conversation && !loading && !messages.length && (
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Belum ada pesan di conversation ini.
+            No messages found.
           </p>
         )}
 

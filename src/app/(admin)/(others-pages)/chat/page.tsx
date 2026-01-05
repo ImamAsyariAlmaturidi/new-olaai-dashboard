@@ -2,7 +2,7 @@
 
 import ChatBox, { ChatMessage } from "@/components/chats/ChatBox";
 import ChatSidebar from "@/components/chats/ChatSidebar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type ConversationSummary = {
   id: string;
@@ -29,34 +29,71 @@ export default function Chat() {
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const fetchConversations = async () => {
-    setLoadingConversations(true);
-    try {
-      const res = await fetch("/api/chat/conversations", { cache: "no-store" });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data?.error || "Tidak dapat memuat percakapan");
-      }
-      setConversations(data.conversations ?? []);
-      if (!selectedConversationId && data.conversations?.length) {
-        setSelectedConversationId(data.conversations[0].id);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Terjadi kesalahan");
-    } finally {
-      setLoadingConversations(false);
-    }
-  };
+  const initialConversationLoadRef = useRef(false);
+  const initialMessagesLoadRef = useRef(false);
+  const selectedConversationIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    selectedConversationIdRef.current = selectedConversationId;
+  }, [selectedConversationId]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const fetchConversations = async () => {
+      if (!initialConversationLoadRef.current) {
+        setLoadingConversations(true);
+      }
+      try {
+        const res = await fetch("/api/chat/conversations", {
+          cache: "no-store",
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.error || "Tidak dapat memuat percakapan");
+        }
+        if (!isActive) return;
+        setConversations(data.conversations ?? []);
+        if (
+          !selectedConversationIdRef.current &&
+          data.conversations?.length
+        ) {
+          setSelectedConversationId(data.conversations[0].id);
+        }
+        initialConversationLoadRef.current = true;
+      } catch (err) {
+        if (!isActive) return;
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
+      } finally {
+        if (!isActive) return;
+        setLoadingConversations(false);
+      }
+    };
+
     fetchConversations();
+    const intervalId = setInterval(fetchConversations, 5000);
+
+    return () => {
+      isActive = false;
+      clearInterval(intervalId);
+    };
   }, []);
 
   useEffect(() => {
+    let isActive = true;
+    initialMessagesLoadRef.current = false;
+
+    if (!selectedConversationId) {
+      setMessages([]);
+      setLoadingMessages(false);
+      return;
+    }
+
     const fetchMessages = async () => {
-      if (!selectedConversationId) return;
-      setLoadingMessages(true);
+      if (!isActive) return;
+      if (!initialMessagesLoadRef.current) {
+        setLoadingMessages(true);
+      }
       try {
         const res = await fetch(
           `/api/chat/conversations/${selectedConversationId}/messages`,
@@ -66,15 +103,24 @@ export default function Chat() {
         if (!res.ok) {
           throw new Error(data?.error || "Tidak dapat memuat pesan");
         }
+        if (!isActive) return;
         setMessages(data.messages ?? []);
+        initialMessagesLoadRef.current = true;
       } catch (err) {
+        if (!isActive) return;
         setError(err instanceof Error ? err.message : "Gagal ambil pesan");
       } finally {
+        if (!isActive) return;
         setLoadingMessages(false);
       }
     };
 
     fetchMessages();
+    const intervalId = setInterval(fetchMessages, 3000);
+    return () => {
+      isActive = false;
+      clearInterval(intervalId);
+    };
   }, [selectedConversationId]);
 
   const handleConversationSelect = (conversationId: string) => {
